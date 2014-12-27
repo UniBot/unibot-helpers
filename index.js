@@ -16,7 +16,7 @@ module.exports = {
         http.get(url, function get(res) {
             var data = '';
 
-            res.on('data', function data(chunk) {
+            res.on('data', function chunk(chunk) {
                 data += chunk;
             });
 
