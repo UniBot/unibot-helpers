@@ -14,29 +14,15 @@ module.exports = {
      * @param   {Function}  callback    Callback function
      */
     download: function download(url, callback) {
-        http.get(url, function get(res) {
-            var data = '';
+        var pattern = new RegExp('^https:\/\/', 'i');
+        var lib = http;
 
-            res.on('data', function chunk(chunk) {
-                data += chunk;
-            });
+        if (pattern.test(url)) {
+            lib = https;
+        }
 
-            res.on('end', function end() {
-                callback(data);
-            });
-        }).on('error', function error() {
-            callback(null);
-        });
-    },
-
-    /**
-     * Helper function to download specified SSL url contents.
-     *
-     * @param   {string}    url         URL to download
-     * @param   {Function}  callback    Callback function
-     */
-    downloadSsl: function downloadSsl(url, callback) {
-        https.get(url, function get(res) {
+        // Fetch URL contents
+        lib.get(url, function get(res) {
             var data = '';
 
             res.on('data', function chunk(chunk) {
